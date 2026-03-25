@@ -1,0 +1,18 @@
+{
+  "rules": {
+    "siteContent": {
+      "mekarasa": {
+        ".read": true,
+        ".write": "auth != null"
+      }
+    },
+    "analytics": {
+      "mekarasa": {
+        "visits": {
+          ".read": "auth != null",
+          ".write": true
+        }
+      }
+    }
+  }
+}
