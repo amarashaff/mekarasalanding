@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mekarasa — Kopi Botolan Modern</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --cream: #F7F0E6; --cream-2: #EFE4D3; --forest: #2D5016; --gold: #C9952A;
+      --brown: #5C3D1E; --brown-2: #6B3A2A; --fruit: #B66A4D; --white: #ffffff;
+      --text: #2e2218; --muted: #6e5b4d; --shadow: 0 20px 60px rgba(45,80,22,.14);
+      --wa: #1faa59;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; line-height: 1.6; }
+    img { max-width: 100%; display: block; }
+    .hidden { display:none !important; }
+    .grain::before { content:""; position:absolute; inset:0; background-image:radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px),radial-gradient(rgba(0,0,0,.03) 1px, transparent 1px); background-size:18px 18px,22px 22px; background-position:0 0,11px 11px; pointer-events:none; opacity:.22; }
+    nav { position:fixed; top:0; left:0; width:100%; z-index:1000; padding:18px 6%; display:flex; justify-content:space-between; align-items:center; transition:.35s ease; }
+    nav.scrolled { background:rgba(247,240,230,.9); backdrop-filter:blur(12px); box-shadow:0 10px 35px rgba(60,40,20,.08); }
+    .logo { display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--forest); }
+    .logo-mark { width:44px; height:44px; border-radius:50%; overflow:hidden; background:linear-gradient(135deg, rgba(45,80,22,.18), rgba(201,149,42,.14)); box-shadow:0 8px 24px rgba(45,80,22,.18); border:1px solid rgba(45,80,22,.08); flex-shrink:0; }
+    .logo-mark img { width:100%; height:100%; object-fit:cover; }
+    .logo-text { font-family:'Playfair Display', serif; font-size:1.5rem; font-weight:800; letter-spacing:.5px; }
+    .nav-links { display:flex; list-style:none; gap:28px; }
+    .nav-links a { text-decoration:none; color:var(--brown); font-size:.95rem; font-weight:500; }
+    .nav-links a:hover { color:var(--forest); }
+    .nav-cta { text-decoration:none; background:var(--wa); color:var(--white); padding:12px 22px; border-radius:999px; font-size:.92rem; font-weight:700; box-shadow:0 12px 28px rgba(31,170,89,.24); }
+    .nav-tools { display:flex; gap:12px; align-items:center; }
+    .edit-trigger { border:none; background:rgba(45,80,22,.08); color:var(--forest); border-radius:999px; padding:10px 16px; font-weight:700; cursor:pointer; }
+    section { position:relative; }
+    .container { width:min(1180px, 88%); margin:0 auto; }
+    .eyebrow { color:var(--gold); font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:3px; margin-bottom:12px; }
+    .title { font-family:'Playfair Display', serif; font-size:clamp(2rem, 4.6vw, 4rem); line-height:1.08; margin-bottom:18px; color:var(--brown); }
+    .desc { color:var(--muted); font-size:1rem; max-width:640px; }
+    #hero { min-height:100vh; display:flex; align-items:center; overflow:hidden; background:linear-gradient(180deg, rgba(247,240,230,.72), rgba(247,240,230,.98)); }
+    .hero-bg { position:absolute; inset:-90px; background:linear-gradient(120deg, rgba(247,240,230,.86), rgba(247,240,230,.38)), url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&q=80') center/cover no-repeat; transform:translateY(0); will-change:transform; }
+    .hero-wave { position:absolute; bottom:-1px; left:0; width:100%; height:130px; background:var(--cream); border-top-left-radius:48% 100%; border-top-right-radius:48% 100%; z-index:1; }
+    .hero-grid { position:relative; z-index:2; display:grid; grid-template-columns:1.08fr .92fr; gap:46px; align-items:center; padding:120px 0 110px; }
+    .hero-title { font-family:'Playfair Display', serif; font-size:clamp(3rem, 6.8vw, 6.2rem); line-height:.98; color:var(--forest); margin-bottom:20px; }
+    .hero-title span { color:var(--gold); }
+    .hero-sub { color:var(--brown); font-size:1.06rem; max-width:620px; margin-bottom:28px; }
+    .hero-highlight { display:inline-flex; align-items:center; gap:12px; background:rgba(255,255,255,.72); border:1px solid rgba(31,170,89,.18); box-shadow:0 14px 34px rgba(31,170,89,.08); border-radius:18px; padding:14px 16px; margin-bottom:26px; color:var(--brown); font-size:.95rem; }
+    .hero-highlight strong { color:#16944b; }
+    .hero-actions { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:24px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; padding:14px 24px; border-radius:999px; font-weight:600; transition:.25s ease; }
+    .btn-primary { background:var(--wa); color:white; box-shadow:0 14px 32px rgba(31,170,89,.24); }
+    .btn-secondary { color:var(--forest); border:1.5px solid rgba(45,80,22,.18); background:rgba(255,255,255,.56); backdrop-filter:blur(10px); }
+    .hero-meta { display:flex; gap:24px; flex-wrap:wrap; color:var(--muted); font-size:.94rem; }
+    .hero-card { position:relative; background:rgba(255,255,255,.58); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.65); border-radius:32px; padding:28px; box-shadow:var(--shadow); overflow:hidden; }
+    .bottle-visual { height:500px; display:grid; place-items:center; position:relative; }
+    .bottle { width:215px; height:395px; border-radius:42px; background:linear-gradient(180deg, rgba(92,61,30,.16), rgba(92,61,30,.72)); position:relative; box-shadow:0 28px 60px rgba(60,38,16,.2); border:8px solid rgba(255,255,255,.42); transform:rotate(-5deg); }
+    .bottle::before { content:""; position:absolute; top:-56px; left:50%; transform:translateX(-50%); width:90px; height:76px; border-radius:22px 22px 14px 14px; background:linear-gradient(180deg, #2f2015, #5c3d1e); }
+    .label { position:absolute; left:50%; top:55%; transform:translate(-50%, -50%); width:74%; background:rgba(247,240,230,.95); color:var(--forest); border-radius:26px; padding:24px 18px; text-align:center; box-shadow:0 10px 24px rgba(60,38,16,.12); border:1px solid rgba(201,149,42,.25); }
+    .label-logo { width:58px; height:58px; margin:0 auto 10px; border-radius:50%; overflow:hidden; border:1px solid rgba(45,80,22,.08); }
+    .label-logo img { width:100%; height:100%; object-fit:cover; }
+    .label-name { font-family:'Playfair Display', serif; font-size:1.42rem; letter-spacing:.5px; margin-bottom:2px; }
+    .label-tag { font-size:.84rem; color:var(--brown); opacity:.88; margin-bottom:6px; }
+    .label-size { font-size:.8rem; color:var(--muted); }
+    .floating-note { position:absolute; background:rgba(255,255,255,.78); border:1px solid rgba(255,255,255,.72); padding:12px 16px; border-radius:16px; box-shadow:0 15px 30px rgba(60,38,16,.08); font-size:.9rem; color:var(--brown); }
+    .note-1 { top:56px; right:6px; } .note-2 { bottom:80px; left:0; }
+    .stats { padding:24px 0 80px; }
+    .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; margin-top:-34px; position:relative; z-index:4; }
+    .stat { background:white; border-radius:24px; padding:28px 24px; box-shadow:var(--shadow); text-align:center; }
+    .stat h3 { font-family:'Playfair Display', serif; color:var(--forest); font-size:2.2rem; }
+    .stat p { color:var(--muted); font-size:.92rem; margin-top:6px; }
+    #story { padding:90px 0; background:linear-gradient(180deg, var(--cream), #fbf7f1); }
+    .story-grid { display:grid; grid-template-columns:1fr 1fr; gap:54px; align-items:center; }
+    .story-visual { position:relative; border-radius:32px; min-height:560px; overflow:hidden; box-shadow:var(--shadow); background:#ddd; }
+    .story-visual img.bg { width:100%; height:125%; object-fit:cover; position:absolute; top:0; left:0; will-change:transform; }
+    .story-badge { position:absolute; bottom:26px; left:26px; background:rgba(247,240,230,.93); color:var(--forest); padding:18px 20px; border-radius:20px; max-width:260px; box-shadow:0 10px 30px rgba(60,38,16,.12); }
+    .story-badge strong { display:block; font-family:'Playfair Display', serif; font-size:1.4rem; color:var(--brown); margin-bottom:4px; }
+    .feature-list { display:grid; gap:16px; margin-top:28px; }
+    .feature { display:flex; gap:14px; align-items:flex-start; background:rgba(255,255,255,.62); border:1px solid rgba(45,80,22,.06); border-radius:20px; padding:16px 18px; }
+    .icon { width:44px; height:44px; border-radius:14px; display:grid; place-items:center; background:linear-gradient(135deg, var(--forest), #3d6720); color:white; flex-shrink:0; }
+    .feature h4 { font-size:1rem; color:var(--brown); margin-bottom:4px; }
+    .feature p { color:var(--muted); font-size:.92rem; }
+    #products { padding:100px 0; background:linear-gradient(180deg, #1f2818 0%, #2D5016 100%); color:white; overflow:hidden; }
+    .products-bg { position:absolute; inset:-80px; background:linear-gradient(rgba(28,42,18,.82), rgba(28,42,18,.88)), url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1400&q=80') center/cover no-repeat; opacity:.38; will-change:transform; }
+    .products-head { position:relative; z-index:2; text-align:center; margin-bottom:52px; }
+    .products-head .title, .products-head .desc { color:white; } .products-head .desc { opacity:.8; margin:0 auto; }
+    .product-grid { position:relative; z-index:2; display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; }
+    .product-card { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:28px; overflow:hidden; backdrop-filter:blur(8px); transition:.3s ease; }
+    .product-image { height:240px; overflow:hidden; } .product-image img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+    .product-body { padding:24px; }
+    .variant-chip { display:inline-block; padding:8px 12px; border-radius:999px; font-size:.76rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:14px; }
+    .signature { background:rgba(201,149,42,.18); color:#f5d287; } .black { background:rgba(255,255,255,.12); color:#f3ede2; } .fruity { background:rgba(182,106,77,.18); color:#ffd6c7; }
+    .product-body h3 { font-family:'Playfair Display', serif; font-size:1.5rem; margin-bottom:8px; }
+    .product-body p { color:rgba(255,255,255,.76); font-size:.94rem; margin-bottom:18px; }
+    .product-meta { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; font-size:.92rem; color:rgba(255,255,255,.76); }
+    .price { font-family:'Playfair Display', serif; color:#ffe2a8; font-size:1.45rem; }
+    .mini-info { display:grid; gap:8px; color:rgba(255,255,255,.72); font-size:.84rem; border-top:1px solid rgba(255,255,255,.08); padding-top:16px; }
+    #contact { padding:100px 0 110px; background:linear-gradient(135deg, #244114, #2D5016 50%, #3f6422 100%); color:white; overflow:hidden; }
+    .contact-bg { position:absolute; inset:-60px; background:radial-gradient(circle at top right, rgba(201,149,42,.34), transparent 26%); will-change:transform; }
+    .contact-box { position:relative; z-index:2; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:34px; padding:56px; text-align:center; backdrop-filter:blur(10px); box-shadow:0 24px 70px rgba(0,0,0,.18); }
+    .contact-box .title, .contact-box .desc { color:white; } .contact-box .desc { opacity:.84; margin:0 auto 24px; }
+    .contact-number { display:inline-block; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.14); padding:12px 18px; border-radius:999px; font-weight:700; letter-spacing:.4px; margin-bottom:18px; }
+    .contact-actions { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-top:20px; }
+    .btn-wa { background:var(--wa); color:white; } .btn-ig { background:rgba(255,255,255,.1); color:white; border:1px solid rgba(255,255,255,.2); }
+    footer { background:#1e170f; color:rgba(255,255,255,.7); padding:70px 0 30px; }
+    .footer-grid { display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr; gap:32px; margin-bottom:34px; }
+    .footer-title { color:white; margin-bottom:12px; font-size:.95rem; letter-spacing:1px; text-transform:uppercase; }
+    .footer-col a { display:block; text-decoration:none; color:rgba(255,255,255,.66); margin-bottom:10px; font-size:.92rem; }
+    .footer-brand p { margin-top:14px; max-width:360px; color:rgba(255,255,255,.64); font-size:.94rem; }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,.08); padding-top:22px; display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; font-size:.88rem; }
+    .reveal { opacity:0; transform:translateY(34px); transition:.75s ease; } .reveal.visible { opacity:1; transform:translateY(0); }
+
+    .editor-dock { position:fixed; right:18px; bottom:18px; z-index:1200; display:flex; gap:10px; align-items:center; }
+    .editor-badge { background:#fff; border:1px solid rgba(45,80,22,.12); padding:10px 14px; border-radius:999px; box-shadow:0 12px 30px rgba(0,0,0,.08); font-size:.84rem; color:var(--brown); }
+    .editor-btn { border:none; background:var(--forest); color:#fff; padding:12px 16px; border-radius:999px; cursor:pointer; font-weight:700; box-shadow:0 12px 28px rgba(45,80,22,.24); }
+    .editor-panel, .login-modal { position:fixed; inset:0; z-index:1400; background:rgba(24,18,12,.44); display:none; align-items:center; justify-content:center; padding:20px; }
+    .editor-panel.active, .login-modal.active { display:flex; }
+    .panel-card { width:min(980px, 100%); max-height:90vh; overflow:auto; background:#fff; border-radius:28px; padding:26px; box-shadow:0 30px 90px rgba(0,0,0,.22); }
+    .panel-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:20px; }
+    .panel-head h3 { font-family:'Playfair Display', serif; color:var(--brown); font-size:1.9rem; }
+    .panel-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .field { display:grid; gap:8px; margin-bottom:16px; }
+    .field label { font-size:.9rem; font-weight:700; color:var(--brown); }
+    .field input, .field textarea { width:100%; border:1px solid rgba(45,80,22,.12); border-radius:16px; padding:12px 14px; font:inherit; }
+    .field textarea { min-height:110px; resize:vertical; }
+    .field small { color:var(--muted); font-size:.82rem; }
+    .panel-actions { display:flex; justify-content:flex-end; gap:12px; margin-top:14px; flex-wrap:wrap; }
+    .soft-btn { border:none; background:#eee5d9; color:var(--brown); padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:700; }
+    .save-btn { border:none; background:var(--wa); color:white; padding:12px 18px; border-radius:14px; cursor:pointer; font-weight:700; }
+    .close-btn { border:none; background:#f4efe8; color:var(--brown); padding:10px 14px; border-radius:12px; cursor:pointer; }
+    .login-card { width:min(420px, 100%); background:#fff; border-radius:24px; padding:24px; box-shadow:0 30px 90px rgba(0,0,0,.24); }
+    .login-card h3 { font-family:'Playfair Display', serif; color:var(--brown); font-size:1.8rem; margin-bottom:8px; }
+    .login-card p { color:var(--muted); margin-bottom:14px; }
+    .status { font-size:.88rem; color:var(--muted); }
+
+    .upload-row { display:grid; grid-template-columns:1fr; gap:8px; margin-top:8px; }
+    .file-input { width:100%; border:1px dashed rgba(45,80,22,.18); border-radius:14px; padding:10px 12px; background:#fbf7f1; font:inherit; }
+    .warning-box { background:#fbf4e7; border:1px solid rgba(201,149,42,.22); color:var(--brown); border-radius:18px; padding:16px; margin-bottom:18px; }
+
+    [contenteditable="true"] { outline:2px dashed rgba(31,170,89,.28); outline-offset:4px; border-radius:6px; }
+    .editable-image-wrap.editing { outline:2px dashed rgba(31,170,89,.28); outline-offset:6px; border-radius:18px; }
+
+    @media (max-width:1100px) {
+      .hero-grid, .story-grid, .product-grid, .footer-grid, .stats-grid, .panel-grid { grid-template-columns:1fr 1fr; }
+      .hero-card { order:-1; }
+    }
+    @media (max-width:760px) {
+      nav { padding:16px 5%; }
+      .nav-links { display:none; }
+      .nav-cta { display:none; }
+      .hero-grid, .story-grid, .product-grid, .footer-grid, .stats-grid, .panel-grid { grid-template-columns:1fr; }
+      .hero-grid { padding:110px 0 100px; }
+      .hero-card { order:0; }
+      .bottle-visual { height:430px; } .bottle { width:188px; height:338px; }
+      .story-visual { min-height:420px; } .contact-box { padding:40px 24px; }
+      .editor-dock { left:14px; right:14px; justify-content:space-between; }
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <a href="#hero" class="logo editable-image-wrap" data-image-key="logoImage">
+      <div class="logo-mark"><img id="logoImage" src="green-lotus.jpg" alt="Logo Mekarasa"></div>
+      <div class="logo-text" data-editable="logoText">Mekarasa</div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#story">Cerita</a></li>
+      <li><a href="#products">Varian</a></li>
+      <li><a href="#contact">Kontak</a></li>
+      <li><a href="https://wa.me/6281325059345" id="navWaLink">WhatsApp</a></li>
+    </ul>
+    <div class="nav-tools">
+      <button class="edit-trigger hidden" id="openLoginTop" aria-hidden="true">Logo Setting</button>
+      <a class="nav-cta" id="navCtaLink" href="#" aria-label="Setting" title="Setting"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8.8A3.2 3.2 0 1 0 12 15.2A3.2 3.2 0 1 0 12 8.8Z" stroke="currentColor" stroke-width="2"/><path d="M19.4 15A1 1 0 0 0 19.6 16.1L19.7 16.2A2 2 0 0 1 16.9 19L16.8 18.9A1 1 0 0 0 15.7 18.7A1 1 0 0 0 15 19.6V19.9A2 2 0 0 1 11 19.9V19.6A1 1 0 0 0 10.3 18.7A1 1 0 0 0 9.2 18.9L9.1 19A2 2 0 1 1 6.3 16.2L6.4 16.1A1 1 0 0 0 6.6 15A1 1 0 0 0 5.7 14.3H5.4A2 2 0 0 1 5.4 10.3H5.7A1 1 0 0 0 6.6 9.6A1 1 0 0 0 6.4 8.5L6.3 8.4A2 2 0 1 1 9.1 5.6L9.2 5.7A1 1 0 0 0 10.3 5.9A1 1 0 0 0 11 5V4.7A2 2 0 0 1 15 4.7V5A1 1 0 0 0 15.7 5.9A1 1 0 0 0 16.8 5.7L16.9 5.6A2 2 0 1 1 19.7 8.4L19.6 8.5A1 1 0 0 0 19.4 9.6A1 1 0 0 0 20.3 10.3H20.6A2 2 0 0 1 20.6 14.3H20.3A1 1 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </nav>
+
+  <section id="hero" class="grain">
+    <div class="hero-bg editable-image-wrap" id="heroBgWrap" data-image-key="heroBg"><div class="hero-bg" id="heroBg"></div></div>
+    <div class="container hero-grid">
+      <div class="reveal">
+        <div class="eyebrow" data-editable="heroEyebrow">Kopi botolan • modern • siap dinikmati</div>
+        <h1 class="hero-title" data-editable="heroTitle">Rasa yang <span>mekar</span> dalam setiap botol.</h1>
+        <p class="hero-sub" data-editable="heroDesc">Mekarasa menghadirkan kopi botolan dengan karakter rasa yang bersih, hangat, dan mudah dinikmati. Diracik untuk menghadirkan pengalaman minum kopi yang praktis, berkelas, dan tetap terasa dekat di setiap kesempatan.</p>
+        <div class="hero-highlight"><span>●</span><span><strong>Order WhatsApp:</strong> <span data-editable="waNumberDisplay">081325059345</span></span></div>
+        <div class="hero-actions">
+          <a id="heroWaBtn" href="https://wa.me/6281325059345?text=Halo%20Mekarasa,%20saya%20ingin%20order" class="btn btn-primary">Order via WhatsApp</a>
+          <a href="#products" class="btn btn-secondary">Lihat Varian</a>
+        </div>
+        <div class="hero-meta">
+          <span data-editable="meta1">Ukuran botol 200ml</span>
+          <span data-editable="meta2">Tiga karakter rasa</span>
+          <span data-editable="meta3">Visual natural dan modern</span>
+        </div>
+      </div>
+
+      <div class="hero-card reveal">
+        <div class="bottle-visual editable-image-wrap" data-image-key="heroBottleImage" style="height:auto;">
+          <img id="heroBottleImage" src="zoom_out-_kemudian_202603252044.jpg" alt="Ilustrasi botol Mekarasa" style="width:100%; max-width:460px; margin:0 auto; border-radius:28px; box-shadow:0 24px 60px rgba(60,38,16,.16); object-fit:cover;">
+          <div class="floating-note note-1" data-editable="floatNote1">Ilustrasi botol Mekarasa</div>
+          <div class="floating-note note-2" data-editable="floatNote2">Siap order cepat lewat WhatsApp</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-wave"></div>
+  </section>
+
+  <section class="stats">
+    <div class="container stats-grid">
+      <div class="stat reveal"><h3 data-editable="stat1Title">200ml</h3><p data-editable="stat1Desc">Ukuran ringkas yang nyaman dibawa dan diminum kapan saja.</p></div>
+      <div class="stat reveal"><h3 data-editable="stat2Title">3</h3><p data-editable="stat2Desc">Tiga varian utama dengan karakter rasa yang berbeda.</p></div>
+      <div class="stat reveal"><h3 data-editable="stat3Title">WA</h3><p data-editable="stat3Desc">Kanal kontak utama untuk tanya produk dan pemesanan.</p></div>
+      <div class="stat reveal"><h3 data-editable="stat4Title">Fresh</h3><p data-editable="stat4Desc">Racikan kopi modern dengan karakter yang bersih dan menarik.</p></div>
+    </div>
+  </section>
+
+  <section id="story">
+    <div class="container story-grid">
+      <div class="story-visual reveal editable-image-wrap" data-image-key="storyImage">
+        <img class="bg" id="storyImg" src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&q=80" alt="Cerita kopi Mekarasa">
+        <div class="story-badge"><strong data-editable="storyBadgeTitle">Mekarasa</strong><span data-editable="storyBadgeDesc">Identitas kopi botolan yang hangat, bersih, dan mudah diingat.</span></div>
+      </div>
+      <div class="reveal">
+        <div class="eyebrow" data-editable="storyEyebrow">Cerita brand</div>
+        <h2 class="title" data-editable="storyTitle">Kopi botolan dengan karakter yang tenang dan berkelas.</h2>
+        <p class="desc" data-editable="storyDesc">Mekarasa lahir dari gagasan sederhana bahwa kopi yang baik tidak harus rumit untuk dinikmati. Dalam satu botol, Mekarasa menghadirkan rasa yang terjaga, tampilan yang bersih, dan pengalaman minum kopi yang terasa lebih personal, segar, dan menyenangkan.</p>
+        <div class="feature-list">
+          <div class="feature reveal"><div class="icon">✿</div><div><h4 data-editable="feature1Title">Identitas yang lembut</h4><p data-editable="feature1Desc">Mekarasa membawa kesan natural, hangat, dan elegan dengan visual yang terinspirasi dari bentuk lotus hijau pada logo.</p></div></div>
+          <div class="feature reveal"><div class="icon">☕</div><div><h4 data-editable="feature2Title">Rasa yang jelas</h4><p data-editable="feature2Desc">Setiap varian dirancang punya karakter sendiri, dari creamy yang kaya hingga black coffee yang bersih dan fruity yang lebih segar.</p></div></div>
+          <div class="feature reveal"><div class="icon">◎</div><div><h4 data-editable="feature3Title">Mudah dinikmati</h4><p data-editable="feature3Desc">Format 200ml membuat Mekarasa terasa praktis, proporsional, dan cocok untuk berbagai momen tanpa kehilangan kesan premium.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="products">
+    <div class="products-bg editable-image-wrap" id="productsBgWrap" data-image-key="productsBg"><div class="products-bg" id="productsBg"></div></div>
+    <div class="container">
+      <div class="products-head reveal">
+        <div class="eyebrow" data-editable="productsEyebrow">Varian Mekarasa</div>
+        <h2 class="title" data-editable="productsTitle">Tiga rasa, tiga suasana.</h2>
+        <p class="desc" data-editable="productsDesc">Setiap varian dibuat dengan pendekatan yang tetap dekat dengan kopi, tetapi menawarkan nuansa rasa yang berbeda agar pengalaman minumnya terasa lebih hidup dan tidak monoton.</p>
+      </div>
+
+      <div class="product-grid">
+        <div class="product-card reveal">
+          <div class="product-image editable-image-wrap" data-image-key="product1Image"><img id="product1Image" src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=900&q=80" alt="Es cappucino"></div>
+          <div class="product-body">
+            <span class="variant-chip signature" data-editable="product1Chip">Signature</span>
+            <h3 data-editable="product1Title">Signature</h3>
+            <p data-editable="product1Desc">Racikan kopi susu creamy dengan tekstur halus dan body yang kaya. Varian ini menonjolkan rasa yang lembut, mewah, dan eksklusif, dengan perpaduan kopi dan susu yang seimbang agar tetap terasa penuh tanpa berlebihan.</p>
+            <div class="product-meta"><span data-editable="product1Size">200ml</span><span class="price" data-editable="product1Price">Rp15.000</span></div>
+            <div class="mini-info"><span data-editable="product1Info1">Karakter: creamy, kaya, lembut.</span><span data-editable="product1Info2">Cocok untuk penikmat kopi susu yang elegan.</span><span data-editable="product1Info3">Memberi kesan premium sebagai varian utama.</span></div>
+          </div>
+        </div>
+
+        <div class="product-card reveal">
+          <div class="product-image editable-image-wrap" data-image-key="product2Image"><img id="product2Image" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&q=80" alt="Es americano"></div>
+          <div class="product-body">
+            <span class="variant-chip black" data-editable="product2Chip">Ice Black</span>
+            <h3 data-editable="product2Title">Ice Black</h3>
+            <p data-editable="product2Desc">Espresso yang dipadukan dengan air untuk menghasilkan black coffee yang bersih, ringan, dan tetap punya kualitas brew yang baik. Rasanya tegas namun rapi, cocok untuk yang menikmati karakter kopi tanpa tambahan susu.</p>
+            <div class="product-meta"><span data-editable="product2Size">200ml</span><span class="price" data-editable="product2Price">Rp13.000</span></div>
+            <div class="mini-info"><span data-editable="product2Info1">Karakter: clean, tegas, seimbang.</span><span data-editable="product2Info2">Menonjolkan kualitas ekstraksi dan kejernihan rasa.</span><span data-editable="product2Info3">Ringan diminum tetapi tetap berisi.</span></div>
+          </div>
+        </div>
+
+        <div class="product-card reveal">
+          <div class="product-image editable-image-wrap" data-image-key="product3Image"><img id="product3Image" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=900&q=80" alt="Es long black"></div>
+          <div class="product-body">
+            <span class="variant-chip fruity" data-editable="product3Chip">Fruity</span>
+            <h3 data-editable="product3Title">Fruity</h3>
+            <p data-editable="product3Desc">Varian kopi dengan kesan yang lebih segar dan aroma buah-buahan yang terasa ringan di hidung maupun di akhir tegukan. Tetap berbasis kopi, tetapi dibuat lebih cerah dan lively agar memberi sensasi yang berbeda.</p>
+            <div class="product-meta"><span data-editable="product3Size">200ml</span><span class="price" data-editable="product3Price">Rp14.000</span></div>
+            <div class="mini-info"><span data-editable="product3Info1">Karakter: segar, aromatic, bright.</span><span data-editable="product3Info2">Membawa nuansa buah tanpa menjauh dari kopi.</span><span data-editable="product3Info3">Memberi alternatif rasa yang lebih playful dan fresh.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-bg" id="contactBg"></div>
+    <div class="container">
+      <div class="contact-box reveal">
+        <div class="eyebrow" style="color:#f1d08a;" data-editable="contactEyebrow">Kontak Mekarasa</div>
+        <h2 class="title" data-editable="contactTitle">Hubungi dan pesan langsung lewat WhatsApp.</h2>
+        <p class="desc" data-editable="contactDesc">Untuk informasi produk, pemesanan, atau kerja sama, Mekarasa bisa dihubungi langsung melalui WhatsApp agar respon lebih cepat dan praktis.</p>
+        <div class="contact-number" data-editable="contactNumber">081325059345</div>
+        <div class="contact-actions">
+          <a id="contactWaBtn" href="https://wa.me/6281325059345?text=Halo%20Mekarasa,%20saya%20ingin%20order%20kopi%20botolan" class="btn btn-wa">Chat WhatsApp</a>
+          <a id="contactTelBtn" href="tel:081325059345" class="btn btn-ig">Telepon</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#hero" class="logo editable-image-wrap" data-image-key="logoImage" style="color:white;">
+            <div class="logo-mark"><img id="footerLogoImage" src="green-lotus.jpg" alt="Logo Mekarasa footer"></div>
+            <div class="logo-text" style="color:#fff;" data-editable="footerBrand">Mekarasa</div>
+          </a>
+          <p data-editable="footerDesc">Kopi botolan modern dengan karakter rasa yang hangat, visual yang bersih, dan pengalaman minum yang terasa lebih dekat dan berkelas.</p>
+        </div>
+        <div class="footer-col"><div class="footer-title">Navigasi</div><a href="#story">Cerita Brand</a><a href="#products">Varian</a><a href="#contact">Kontak</a></div>
+        <div class="footer-col"><div class="footer-title">Varian</div><a href="#products">Signature</a><a href="#products">Ice Black</a><a href="#products">Fruity</a></div>
+        <div class="footer-col"><div class="footer-title">WhatsApp</div><a id="footerWaNumber" href="https://wa.me/6281325059345">081325059345</a><a id="footerWaChat" href="https://wa.me/6281325059345?text=Halo%20Mekarasa">Chat langsung</a></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 Mekarasa. All rights reserved.</span><span data-editable="footerTagline">Rasa yang mekar dalam setiap botol.</span></div>
+    </div>
+  </footer>
+
+  <div class="editor-dock">
+    <div class="editor-badge" id="editorStatus">Mode publik</div>
+    <button class="editor-btn" id="openLogin">Buka Editor</button>
+  </div>
+
+  <div class="login-modal" id="loginModal">
+    <div class="login-card">
+      <h3>Login editor</h3>
+      <p>Masukkan email dan password Firebase Authentication untuk mengakses editor konten.</p>
+      <div class="field"><label>Email</label><input type="email" id="editorEmail" placeholder="admin@mekarasa.com"></div>
+      <div class="field"><label>Password</label><input type="password" id="editorPassword" placeholder="Masukkan password"></div>
+      <div class="status" id="loginStatus">Login Firebase diperlukan untuk masuk ke mode edit.</div>
+      <div class="panel-actions">
+        <button class="soft-btn" id="closeLogin">Tutup</button>
+        <button class="save-btn" id="submitLogin">Masuk</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="editor-panel" id="editorPanel">
+    <div class="panel-card">
+      <div class="panel-head">
+        <div>
+          <h3>Logo Setting & Content Editor</h3>
+          <div class="status">Ubah deskripsi dan gambar landing page, lalu simpan ke browser atau Firebase.</div>
+        </div>
+        <button class="close-btn" id="closeEditor">Tutup</button>
+      </div>
+      <div class="warning-box">Demo ini sudah punya login lokal dengan password <strong>fkorbisa</strong>. Untuk produksi, jangan simpan password di frontend seperti ini; gunakan Firebase Authentication agar login aman. Data teks dan URL gambar disimpan ke Firebase Realtime Database, sedangkan file gambar yang di-upload dari menu setting akan dikirim ke Firebase Storage bila tersedia. </div>
+      <div class="panel-grid">
+        <div>
+          <div class="field"><label>Logo image URL</label><input id="input_logoImage" placeholder="https://..."><div class="upload-row"><input class="file-input" type="file" id="file_logoImage" accept="image/*"></div><small>Dipakai untuk logo navbar, label botol, dan footer.</small></div>
+          <div class="field"><label>Hero background URL</label><input id="input_heroBg" placeholder="https://..."><div class="upload-row"><input class="file-input" type="file" id="file_heroBg" accept="image/*"></div></div>
+          <div class="field"><label>Story image URL</label><input id="input_storyImage" placeholder="https://..."><div class="upload-row"><input class="file-input" type="file" id="file_storyImage" accept="image/*"></div></div>
+          <div class="field"><label>Products background URL</label><input id="input_productsBg" placeholder="https://..."><div class="upload-row"><input class="file-input" type="file" id="file_productsBg" accept="image/*"></div></div>
+          <div class="field"><label>Product image — Signature</label><input id="input_product1Image" placeholder="https://..."><div class="upload-row"><input class="file-input" type="file" id="file_product1Image" accept="image/*"></div></div>
+          <div class="field"><label>Product image — Ice Black</label><input id="input_product2Image" placeholder="https://..."><div class="upload-row"><input class="file-input" type="file" id="file_product2Image" accept="image/*"></div></div>
+          <div class="field"><label>Product image — Fruity</label><input id="input_product3Image" placeholder="https://..."><div class="upload-row"><input class="file-input" type="file" id="file_product3Image" accept="image/*"></div></div>
+          <div class="field"><label>Hero bottle image URL</label><input id="input_heroBottleImage" placeholder="https://..."><div class="upload-row"><input class="file-input" type="file" id="file_heroBottleImage" accept="image/*"></div></div>
+        </div>
+        <div>
+          <div class="field"><label>Hero title</label><textarea id="input_heroTitle"></textarea></div>
+          <div class="field"><label>Hero description</label><textarea id="input_heroDesc"></textarea></div>
+          <div class="field"><label>Story title</label><textarea id="input_storyTitle"></textarea></div>
+          <div class="field"><label>Story description</label><textarea id="input_storyDesc"></textarea></div>
+          <div class="field"><label>Contact number</label><input id="input_contactNumber" placeholder="0813..."><small>Akan sinkron ke tombol WA dan tel.</small></div>
+        </div>
+      </div>
+      <div class="panel-actions">
+        <button class="soft-btn" id="loadLocal">Load tersimpan</button>
+        <button class="soft-btn" id="toggleEditable">Aktifkan edit langsung</button>
+        <button class="soft-btn" id="loadFirebase">Load Firebase</button>
+        <button class="save-btn" id="saveLocal">Simpan lokal</button>
+        <button class="save-btn" id="saveFirebase">Simpan Firebase</button>
+      </div>
+      <div class="warning-box" style="margin-top:16px;">
+        Untuk deploy ke Vercel, file ini sudah disiapkan untuk Firebase Authentication, Realtime Database, dan Firebase Storage.
+        Path data yang dipakai: <strong>siteContent/mekarasa</strong>.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const nav = document.getElementById('navbar');
+    const heroBg = document.getElementById('heroBg');
+    const storyImg = document.getElementById('storyImg');
+    const productsBg = document.getElementById('productsBg');
+    const contactBg = document.getElementById('contactBg');
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 30);
+      const y = window.scrollY;
+      if (heroBg) heroBg.style.transform = `translateY(${y * 0.18}px)`;
+      if (storyImg) storyImg.style.transform = `translateY(${y * 0.08}px)`;
+      if (productsBg) productsBg.style.transform = `translateY(${y * 0.12}px)`;
+      if (contactBg) contactBg.style.transform = `translateY(${y * 0.08}px)`;
+    }, { passive: true });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.14 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const STORAGE_KEY = 'mekarasa_editor_content_v1';
+    const FIREBASE_ENABLED = true;
+    const firebaseConfig = {
+      apiKey: "AIzaSyDCcdLScgpRqk35OSIvQ26nNO5yeXGit5A",
+      authDomain: "landing-page-mekarasa.firebaseapp.com",
+      databaseURL: "https://landing-page-mekarasa-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "landing-page-mekarasa",
+      storageBucket: "landing-page-mekarasa.firebasestorage.app",
+      messagingSenderId: "249083290241",
+      appId: "1:249083290241:web:7e1a09ae98e64824d2e380"
+    };
+    let isEditorEnabled = false;
+
+    const editableMap = {};
+    document.querySelectorAll('[data-editable]').forEach(el => editableMap[el.dataset.editable] = el);
+
+    const imageTargets = {
+      logoImage: [document.getElementById('logoImage'), document.getElementById('labelLogoImage'), document.getElementById('footerLogoImage')],
+      storyImage: [document.getElementById('storyImg')],
+      product1Image: [document.getElementById('product1Image')],
+      product2Image: [document.getElementById('product2Image')],
+      product3Image: [document.getElementById('product3Image')],
+      heroBottleImage: [document.getElementById('heroBottleImage')]
+    };
+
+    const bgTargets = {
+      heroBg: document.getElementById('heroBg'),
+      productsBg: document.getElementById('productsBg')
+    };
+
+    function defaultState() {
+      const text = {};
+      Object.keys(editableMap).forEach(key => text[key] = editableMap[key].innerHTML);
+      return {
+        text,
+        images: {
+          logoImage: document.getElementById('logoImage').getAttribute('src'),
+          storyImage: document.getElementById('storyImg').getAttribute('src'),
+          product1Image: document.getElementById('product1Image').getAttribute('src'),
+          product2Image: document.getElementById('product2Image').getAttribute('src'),
+          product3Image: document.getElementById('product3Image').getAttribute('src'),
+          heroBottleImage: document.getElementById('heroBottleImage').getAttribute('src'),
+          heroBg: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&q=80',
+          productsBg: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1400&q=80'
+        },
+        contactNumber: '081325059345'
+      };
+    }
+
+    function normalizePhone(raw) {
+      const digits = (raw || '').replace(/\D/g, '');
+      if (!digits) return { display:'', wa:'' };
+      if (digits.startsWith('62')) return { display: '0' + digits.slice(2), wa: digits };
+      if (digits.startsWith('0')) return { display: digits, wa: '62' + digits.slice(1) };
+      return { display: digits, wa: digits };
+    }
+
+    function applyState(state) {
+      Object.entries(state.text || {}).forEach(([key, value]) => {
+        if (editableMap[key]) editableMap[key].innerHTML = value;
+      });
+
+      Object.entries(state.images || {}).forEach(([key, value]) => {
+        if (imageTargets[key]) imageTargets[key].forEach(img => img && img.setAttribute('src', value));
+        if (key === 'heroBg' && bgTargets.heroBg) bgTargets.heroBg.style.background = `linear-gradient(120deg, rgba(247,240,230,.86), rgba(247,240,230,.38)), url('${value}') center/cover no-repeat`;
+        if (key === 'productsBg' && bgTargets.productsBg) bgTargets.productsBg.style.background = `linear-gradient(rgba(28,42,18,.82), rgba(28,42,18,.88)), url('${value}') center/cover no-repeat`;
+      });
+
+      const phone = normalizePhone(state.contactNumber || editableMap.contactNumber?.textContent || '081325059345');
+      editableMap.contactNumber.innerHTML = phone.display;
+      editableMap.waNumberDisplay.innerHTML = phone.display;
+      document.getElementById('navWaLink').href = `https://wa.me/${phone.wa}`;
+      document.getElementById('navCtaLink').href = '#';
+      document.getElementById('heroWaBtn').href = `https://wa.me/${phone.wa}?text=Halo%20Mekarasa,%20saya%20ingin%20order`;
+      document.getElementById('contactWaBtn').href = `https://wa.me/${phone.wa}?text=Halo%20Mekarasa,%20saya%20ingin%20order%20kopi%20botolan`;
+      document.getElementById('contactTelBtn').href = `tel:${phone.display}`;
+      document.getElementById('footerWaNumber').href = `https://wa.me/${phone.wa}`;
+      document.getElementById('footerWaNumber').textContent = phone.display;
+      document.getElementById('footerWaChat').href = `https://wa.me/${phone.wa}?text=Halo%20Mekarasa`;
+
+      syncInputsFromPage();
+    }
+
+    function collectStateFromPage() {
+      const text = {};
+      Object.keys(editableMap).forEach(key => text[key] = editableMap[key].innerHTML);
+      return {
+        text,
+        images: {
+          logoImage: document.getElementById('logoImage').getAttribute('src'),
+          storyImage: document.getElementById('storyImg').getAttribute('src'),
+          product1Image: document.getElementById('product1Image').getAttribute('src'),
+          product2Image: document.getElementById('product2Image').getAttribute('src'),
+          product3Image: document.getElementById('product3Image').getAttribute('src'),
+          heroBottleImage: document.getElementById('heroBottleImage').getAttribute('src'),
+          heroBg: document.getElementById('input_heroBg').value || defaultState().images.heroBg,
+          productsBg: document.getElementById('input_productsBg').value || defaultState().images.productsBg
+        },
+        contactNumber: editableMap.contactNumber.textContent.trim()
+      };
+    }
+
+    function syncInputsFromPage() {
+      document.getElementById('input_logoImage').value = document.getElementById('logoImage').getAttribute('src') || '';
+      document.getElementById('input_storyImage').value = document.getElementById('storyImg').getAttribute('src') || '';
+      document.getElementById('input_product1Image').value = document.getElementById('product1Image').getAttribute('src') || '';
+      document.getElementById('input_product2Image').value = document.getElementById('product2Image').getAttribute('src') || '';
+      document.getElementById('input_product3Image').value = document.getElementById('product3Image').getAttribute('src') || '';
+      document.getElementById('input_heroBottleImage').value = document.getElementById('heroBottleImage').getAttribute('src') || '';
+      document.getElementById('input_heroBg').value = extractBgUrl(bgTargets.heroBg.style.background) || defaultState().images.heroBg;
+      document.getElementById('input_productsBg').value = extractBgUrl(bgTargets.productsBg.style.background) || defaultState().images.productsBg;
+      document.getElementById('input_heroTitle').value = editableMap.heroTitle.innerText.trim();
+      document.getElementById('input_heroDesc').value = editableMap.heroDesc.innerText.trim();
+      document.getElementById('input_storyTitle').value = editableMap.storyTitle.innerText.trim();
+      document.getElementById('input_storyDesc').value = editableMap.storyDesc.innerText.trim();
+      document.getElementById('input_contactNumber').value = editableMap.contactNumber.innerText.trim();
+    }
+
+    function extractBgUrl(bg) {
+      const m = /url\(["']?(.*?)["']?\)/.exec(bg || '');
+      return m ? m[1] : '';
+    }
+
+    function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handleLocalFileUpload(key, file) {
+      if (!file) return;
+      let finalUrl = null;
+      try {
+        finalUrl = await uploadImageToFirebase(file, `mekarasa/${key}/${Date.now()}-${file.name}`);
+      } catch (err) {
+        finalUrl = await fileToDataUrl(file);
+      }
+      if (imageTargets[key]) imageTargets[key].forEach(img => img.src = finalUrl);
+      if (key === 'storyImage') document.getElementById('storyImg').src = finalUrl;
+      if (key === 'product1Image') document.getElementById('product1Image').src = finalUrl;
+      if (key === 'product2Image') document.getElementById('product2Image').src = finalUrl;
+      if (key === 'product3Image') document.getElementById('product3Image').src = finalUrl;
+      if (key === 'heroBottleImage') document.getElementById('heroBottleImage').src = finalUrl;
+      if (key === 'heroBg') bgTargets.heroBg.style.background = `linear-gradient(120deg, rgba(247,240,230,.86), rgba(247,240,230,.38)), url('${finalUrl}') center/cover no-repeat`;
+      if (key === 'productsBg') bgTargets.productsBg.style.background = `linear-gradient(rgba(28,42,18,.82), rgba(28,42,18,.88)), url('${finalUrl}') center/cover no-repeat`;
+      const input = document.getElementById('input_' + key);
+      if (input) input.value = finalUrl;
+    }
+
+    function bindInputUpdates() {
+      document.getElementById('input_logoImage').addEventListener('input', e => imageTargets.logoImage.forEach(img => img.src = e.target.value || 'green-lotus.jpg'));
+      document.getElementById('input_storyImage').addEventListener('input', e => document.getElementById('storyImg').src = e.target.value || defaultState().images.storyImage);
+      document.getElementById('input_product1Image').addEventListener('input', e => document.getElementById('product1Image').src = e.target.value || defaultState().images.product1Image);
+      document.getElementById('input_product2Image').addEventListener('input', e => document.getElementById('product2Image').src = e.target.value || defaultState().images.product2Image);
+      document.getElementById('input_product3Image').addEventListener('input', e => document.getElementById('product3Image').src = e.target.value || defaultState().images.product3Image);
+      document.getElementById('input_heroBottleImage').addEventListener('input', e => document.getElementById('heroBottleImage').src = e.target.value || defaultState().images.heroBottleImage);
+      document.getElementById('input_heroBg').addEventListener('input', e => bgTargets.heroBg.style.background = `linear-gradient(120deg, rgba(247,240,230,.86), rgba(247,240,230,.38)), url('${e.target.value}') center/cover no-repeat`);
+      document.getElementById('input_productsBg').addEventListener('input', e => bgTargets.productsBg.style.background = `linear-gradient(rgba(28,42,18,.82), rgba(28,42,18,.88)), url('${e.target.value}') center/cover no-repeat`);
+      document.getElementById('input_heroTitle').addEventListener('input', e => editableMap.heroTitle.innerText = e.target.value);
+      document.getElementById('input_heroDesc').addEventListener('input', e => editableMap.heroDesc.innerText = e.target.value);
+      document.getElementById('input_storyTitle').addEventListener('input', e => editableMap.storyTitle.innerText = e.target.value);
+      document.getElementById('input_storyDesc').addEventListener('input', e => editableMap.storyDesc.innerText = e.target.value);
+      document.getElementById('input_contactNumber').addEventListener('input', e => applyState({ ...collectStateFromPage(), contactNumber: e.target.value }));
+
+      ['logoImage','heroBg','storyImage','productsBg','product1Image','product2Image','product3Image','heroBottleImage'].forEach(key => {
+        const fileInput = document.getElementById('file_' + key);
+        if (fileInput) {
+          fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files && e.target.files[0];
+            await handleLocalFileUpload(key, file);
+          });
+        }
+      });
+    }
+
+    function setDirectEditMode(enabled) {
+      isEditorEnabled = enabled;
+      document.getElementById('editorStatus').textContent = enabled ? 'Mode edit aktif' : 'Mode publik';
+      document.querySelectorAll('[data-editable]').forEach(el => {
+        el.contentEditable = enabled ? 'true' : 'false';
+      });
+      document.querySelectorAll('.editable-image-wrap').forEach(el => el.classList.toggle('editing', enabled));
+    }
+
+    const loginModal = document.getElementById('loginModal');
+    const editorPanel = document.getElementById('editorPanel');
+    const loginStatus = document.getElementById('loginStatus');
+
+    function openLogin() { loginModal.classList.add('active'); }
+    function closeLogin() { loginModal.classList.remove('active'); }
+    function openEditor() { syncInputsFromPage(); editorPanel.classList.add('active'); }
+    function closeEditor() { editorPanel.classList.remove('active'); }
+
+    document.getElementById('openLogin').addEventListener('click', openLogin);
+    document.getElementById('openLoginTop').addEventListener('click', openLogin);
+    document.getElementById('navCtaLink').addEventListener('click', (e) => { e.preventDefault(); openLogin(); });
+    document.getElementById('closeLogin').addEventListener('click', closeLogin);
+    document.getElementById('closeEditor').addEventListener('click', closeEditor);
+
+    document.getElementById('submitLogin').addEventListener('click', async () => {
+      const email = document.getElementById('editorEmail').value.trim();
+      const pwd = document.getElementById('editorPassword').value;
+      try {
+        await loginFirebase(email, pwd);
+        loginStatus.textContent = 'Login berhasil. Editor dibuka.';
+        closeLogin();
+        openEditor();
+      } catch (err) {
+        loginStatus.textContent = 'Login gagal: ' + err.message;
+      }
+    });
+
+    document.getElementById('toggleEditable').addEventListener('click', () => {
+      setDirectEditMode(!isEditorEnabled);
+      syncInputsFromPage();
+    });
+
+    document.getElementById('saveLocal').addEventListener('click', () => {
+      const state = collectStateFromPage();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      alert('Perubahan disimpan di browser ini.');
+    });
+
+    document.getElementById('loadLocal').addEventListener('click', () => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return alert('Belum ada data lokal tersimpan.');
+      applyState(JSON.parse(saved));
+      alert('Data lokal dimuat.');
+    });
+
+    document.getElementById('saveFirebase').addEventListener('click', async () => {
+      try {
+        const state = collectStateFromPage();
+        await saveToFirebase(state);
+        alert('Data berhasil disimpan ke Firebase.');
+      } catch (err) {
+        alert('Gagal simpan ke Firebase: ' + err.message);
+      }
+    });
+
+    document.getElementById('loadFirebase').addEventListener('click', async () => {
+      try {
+        const data = await loadFromFirebase();
+        applyState(data);
+        alert('Data berhasil dimuat dari Firebase.');
+      } catch (err) {
+        alert('Gagal load dari Firebase: ' + err.message);
+      }
+    });
+
+    document.querySelectorAll('.editable-image-wrap').forEach(wrap => {
+      wrap.addEventListener('dblclick', () => {
+        if (!isEditorEnabled) return;
+        const key = wrap.dataset.imageKey;
+        if (!key) return;
+        const url = prompt('Masukkan URL gambar baru:');
+        if (!url) return;
+        if (imageTargets[key]) imageTargets[key].forEach(img => img.src = url);
+        if (key === 'heroBg') bgTargets.heroBg.style.background = `linear-gradient(120deg, rgba(247,240,230,.86), rgba(247,240,230,.38)), url('${url}') center/cover no-repeat`;
+        if (key === 'productsBg') bgTargets.productsBg.style.background = `linear-gradient(rgba(28,42,18,.82), rgba(28,42,18,.88)), url('${url}') center/cover no-repeat`;
+        syncInputsFromPage();
+      });
+    });
+
+    bindInputUpdates();
+    applyState(defaultState());
+
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try { applyState(JSON.parse(saved)); } catch(e) {}
+    }
+
+    // Firebase integration placeholders
+    let firebaseDeps = null;
+    async function initFirebase() {
+      if (!FIREBASE_ENABLED) throw new Error('Firebase belum diaktifkan.');
+      if (firebaseDeps) return firebaseDeps;
+      const [appMod, dbMod, storageMod, authMod] = await Promise.all([
+        import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),
+        import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js'),
+        import('https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js'),
+        import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js')
+      ]);
+      const app = appMod.initializeApp(firebaseConfig);
+      const db = dbMod.getDatabase(app);
+      const storage = storageMod.getStorage(app);
+      const auth = authMod.getAuth(app);
+      firebaseDeps = {
+        db, storage, auth,
+        dbRef: dbMod.ref, dbGet: dbMod.get, dbSet: dbMod.set, dbUpdate: dbMod.update, onValue: dbMod.onValue,
+        storageRef: storageMod.ref, uploadBytes: storageMod.uploadBytes, getDownloadURL: storageMod.getDownloadURL,
+        signInWithEmailAndPassword: authMod.signInWithEmailAndPassword, signOut: authMod.signOut, onAuthStateChanged: authMod.onAuthStateChanged
+      };
+      return firebaseDeps;
+    }
+
+    async function saveToFirebase(content) {
+      const { db, dbRef, dbSet } = await initFirebase();
+      await dbSet(dbRef(db, 'siteContent/mekarasa'), { ...content, updatedAt: new Date().toISOString() });
+    }
+
+    async function loadFromFirebase() {
+      const { db, dbRef, dbGet } = await initFirebase();
+      const snap = await dbGet(dbRef(db, 'siteContent/mekarasa'));
+      if (!snap.exists()) throw new Error('Data siteContent/mekarasa belum ada.');
+      return snap.val();
+    }
+
+    async function uploadImageToFirebase(file, path) {
+      const { storage, storageRef, uploadBytes, getDownloadURL } = await initFirebase();
+      const refObj = storageRef(storage, path);
+      await uploadBytes(refObj, file);
+      return await getDownloadURL(refObj);
+    }
+
+    async function loginFirebase(email, password) {
+      const { auth, signInWithEmailAndPassword } = await initFirebase();
+      return await signInWithEmailAndPassword(auth, email, password);
+    }
+
+    async function logoutFirebase() {
+      const { auth, signOut } = await initFirebase();
+      return await signOut(auth);
+    }
+  </script>
+</body>
+</html>
